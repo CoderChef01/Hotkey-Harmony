@@ -12,8 +12,8 @@ class KeyRecorder:
         self.recording = False
         self.intervals = []  # Lista az intevallumok tárolására
 
-        self.master.title("Screen Recorder")
-        self.master.geometry("600x100")  # Ablak mérete
+        self.master.title("Hotkey Harmony")
+        self.master.geometry("500x100")  # Ablak mérete
 
         self.label = tk.Label(master, text="Lenyomott gombok:")
         self.label.pack(side=tk.TOP, pady=10)
