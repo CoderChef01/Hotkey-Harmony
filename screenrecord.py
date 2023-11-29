@@ -13,10 +13,12 @@ class KeyRecorder:
         self.intervals = []  # Lista az intevallumok tárolására
 
         self.master.title("Hotkey Harmony")
-        self.master.geometry("500x100")  # Ablak mérete
+        self.master.geometry("500x200")  # Ablak mérete
 
-        self.label = tk.Label(master, text="Lenyomott gombok:")
-        self.label.pack(side=tk.TOP, pady=10)
+        self.label = tk.Label(master, text="Records:")
+        self.label.config(font=("Arial", 14, "bold"))
+        self.label.pack(side=tk.TOP, pady=10, anchor="w")  # Balra igazítás hozzáadva
+
 
         # Menü létrehozása
         menubar = tk.Menu(master)
@@ -44,13 +46,13 @@ class KeyRecorder:
         options_menu.add_command(label="Speed", command=self.set_speed)
 
         # Gombok és eseménykezelők
-        self.start_button = tk.Button(master, text="Felvétel indítása", command=self.start_recording)
+        self.start_button = tk.Button(master, text="Record", font=("Arial", 12), command=self.start_recording)
         self.start_button.pack(side=tk.RIGHT, padx=10)
 
-        self.stop_button = tk.Button(master, text="Felvétel leállítása", command=self.stop_recording, state=tk.DISABLED)
+        self.stop_button = tk.Button(master, text="Stop", font=("Arial", 12), command=self.stop_recording, state=tk.DISABLED)
         self.stop_button.pack(side=tk.RIGHT, padx=10)
 
-        self.play_button = tk.Button(master, text="Visszajátszás", command=self.play_recorded_keys)
+        self.play_button = tk.Button(master, text="Start", font=("Arial", 12), command=self.play_recorded_keys)
         self.play_button.pack(side=tk.LEFT, padx=10)
 
         self.author_label = tk.Label(master, text="CoderChef", font=("Arial", 8), fg="gray")
@@ -70,7 +72,7 @@ class KeyRecorder:
         self.start_button.config(state=tk.DISABLED)
         self.stop_button.config(state=tk.NORMAL)
         # Az aktuális felvétel-intervallum label létrehozása
-        self.recording_label = tk.Label(self.master, text="Lenyomott gombok:")
+        self.recording_label = tk.Label(self.master, text="Keys")
         self.recording_label.pack(side=tk.TOP, pady=10)
 
     def stop_recording(self):
@@ -87,9 +89,12 @@ class KeyRecorder:
                 self.recorded_keys.append(key)
                 self.recorded_times.append(time.time())  # Rögzítjük az időpontot
                 if self.recording_label:
-                    self.recording_label.config(text="Lenyomott gombok: " + " ".join(self.recorded_keys))
-                    # Szimuláljunk gombnyomást
-                    self.simulate_key_press(key)
+                    self.update_recording_label()
+
+    def update_recording_label(self):
+        if self.recording_label:
+            self.recording_label.config(text="Keys: " + " ".join(self.recorded_keys))
+
 
     def simulate_key_press(self, key):
         # Hozzunk létre egy Controller példányt
@@ -104,7 +109,7 @@ class KeyRecorder:
         for interval_keys, interval_times in self.intervals:
             for i in range(len(interval_keys)):
                 key = interval_keys[i]
-                self.label.config(text="Lenyomott gombok: " + key)
+                self.label.config(text="Keys: " + key)
                 self.simulate_key_press(key)
                 # Várakozás a következő gombnyomásig
                 if i + 1 < len(interval_times):
