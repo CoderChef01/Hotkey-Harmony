@@ -55,6 +55,14 @@ class KeyRecorder:
         settings_menu.add_command(label="View", command=self.settings_option2)
         settings_menu.add_command(label="Other", command=self.settings_option3)
 
+        # "Help" menüpont        
+        help_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="Help", menu=help_menu)
+
+        # "About" opció
+        about_menu = tk.Menu(help_menu, tearoff=0)
+        help_menu.add_cascade(label="About", menu=about_menu)
+        about_menu.add_command(label="About", command=self.about_option)
         # Címke a státusz üzenetekhez
         self.status_label = tk.Label(master, text="Ready...", font=("Arial", 10), anchor="w", fg="green")
         self.status_label.pack(side=tk.BOTTOM, anchor=tk.SW, padx=10, pady=5)
@@ -198,6 +206,10 @@ class KeyRecorder:
 
     def settings_option3(self):
         print("Settings Option 3 selected")
+        
+    def about_option(self):
+        messagebox.showinfo("About", "Hotkey Harmony\nVersion 1.0\n\n(C) 2023 CoderChef")
+
 
 
 if __name__ == "__main__":
