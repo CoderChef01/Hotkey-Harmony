@@ -56,7 +56,11 @@ class KeyRecorder:
         settings_menu.add_command(label="View", command=self.settings_option2)
         settings_menu.add_command(label="Other", command=self.settings_option3)
         
-        
+        # Címke a státusz üzenetekhez
+        self.status_label = tk.Label(master, text="Ready...", font=("Arial", 10), anchor="w", fg="green")
+        self.status_label.pack(side=tk.BOTTOM, anchor=tk.SW, padx=10, pady=5)
+
+
         # Gombok és eseménykezelők
         self.start_button = tk.Button(master, text="Record", font=("Arial", 12), command=self.start_recording)
         self.start_button.pack(side=tk.RIGHT, padx=10)
@@ -83,8 +87,10 @@ class KeyRecorder:
         self.recording = True
         self.start_button.config(state=tk.DISABLED)
         self.stop_button.config(state=tk.NORMAL)
+        self.status_label.config(text="Recording...", fg="red")
+
         # Az aktuális felvétel-intervallum label létrehozása
-        self.recording_label = tk.Label(self.master, text="Keys")
+        self.recording_label = tk.Label(self.master, text="Lenyomott gombok:")
         self.recording_label.pack(side=tk.TOP, pady=10)
 
     def stop_recording(self):
@@ -93,6 +99,7 @@ class KeyRecorder:
         self.start_button.config(state=tk.NORMAL)
         self.stop_button.config(state=tk.DISABLED)
         self.recording_label.destroy()  # Az aktuális felvétel-intervallum label törlése
+        self.status_label.config(text="Ready...", fg="green")
 
     def on_key(self, event):
         if self.recording:
@@ -118,16 +125,19 @@ class KeyRecorder:
         controller.release(key)
 
     def play_recorded_keys(self):
+        self.status_label.config(text="Replaying...", fg="blue")
         for interval_keys, interval_times in self.intervals:
             for i in range(len(interval_keys)):
                 key = interval_keys[i]
-                self.label.config(text="Keys: " + key)
+                self.label.config(text="Lenyomott gombok: " + key)
                 self.simulate_key_press(key)
                 # Várakozás a következő gombnyomásig
                 if i + 1 < len(interval_times):
                     sleep_time = interval_times[i + 1] - interval_times[i]
                     time.sleep(sleep_time)
                 self.master.update()
+        self.status_label.config(text="Ready...", fg="green")
+
 
     def handle_hotkey_press(self, hotkey):
         messagebox.showinfo("Gyorsgomb értesítés", f"{hotkey} gomb megnyomva!", icon="info")
@@ -152,18 +162,18 @@ class KeyRecorder:
     def quit_app(self):
         self.master.destroy()
 
-    def toggle_repeat(self):
+    def toggle_playback(self):
         # Implementáld a "Repeat" opció állapotának kezelését
         pass
 
-    def toggle_hotkeys(self):
+    def recording(self):
         # Implementáld a "Hotkeys" opció állapotának kezelését
         pass
 
-    def set_speed(self):
+    def set_settings(self):
         # Implementáld a "Speed" opció funkcióját
         pass
-
+        
     def playback_option1(self):
         print("Playback Option 1 selected")
 
