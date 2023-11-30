@@ -19,7 +19,6 @@ class KeyRecorder:
         self.label.config(font=("Arial", 14, "bold"))
         self.label.pack(side=tk.TOP, pady=10, anchor="w")  # Balra igazítás hozzáadva
 
-
         # Menü létrehozása
         menubar = tk.Menu(master)
         master.config(menu=menubar)
@@ -45,9 +44,9 @@ class KeyRecorder:
         # "Recording" opció
         recording_menu = tk.Menu(options_menu, tearoff=0)
         options_menu.add_cascade(label="Recording", menu=recording_menu)
-        
+
         recording_menu.add_command(label="Option", command=self.recording_option1)
-     
+
         # "Settings" opció
         settings_menu = tk.Menu(options_menu, tearoff=0)
         options_menu.add_cascade(label="Settings", menu=settings_menu)
@@ -55,17 +54,17 @@ class KeyRecorder:
         settings_menu.add_command(label="Hotkeys", command=self.settings_option1)
         settings_menu.add_command(label="View", command=self.settings_option2)
         settings_menu.add_command(label="Other", command=self.settings_option3)
-        
+
         # Címke a státusz üzenetekhez
         self.status_label = tk.Label(master, text="Ready...", font=("Arial", 10), anchor="w", fg="green")
         self.status_label.pack(side=tk.BOTTOM, anchor=tk.SW, padx=10, pady=5)
-
 
         # Gombok és eseménykezelők
         self.start_button = tk.Button(master, text="Record", font=("Arial", 12), command=self.start_recording)
         self.start_button.pack(side=tk.RIGHT, padx=10)
 
-        self.stop_button = tk.Button(master, text="Stop", font=("Arial", 12), command=self.stop_recording, state=tk.DISABLED)
+        self.stop_button = tk.Button(master, text="Stop", font=("Arial", 12), command=self.stop_recording,
+                                     state=tk.DISABLED)
         self.stop_button.pack(side=tk.RIGHT, padx=10)
 
         self.play_button = tk.Button(master, text="Start", font=("Arial", 12), command=self.play_recorded_keys)
@@ -114,8 +113,8 @@ class KeyRecorder:
         if self.recording_label:
             self.recording_label.config(text="Keys: " + " ".join(self.recorded_keys))
 
-
-    def simulate_key_press(self, key):
+    @staticmethod
+    def simulate_key_press(key):
         # Hozzunk létre egy Controller példányt
         controller = keyboard.Controller()
 
@@ -137,7 +136,6 @@ class KeyRecorder:
                     time.sleep(sleep_time)
                 self.master.update()
         self.status_label.config(text="Ready...", fg="green")
-
 
     def handle_hotkey_press(self, hotkey):
         messagebox.showinfo("Gyorsgomb értesítés", f"{hotkey} gomb megnyomva!", icon="info")
@@ -173,7 +171,7 @@ class KeyRecorder:
     def set_settings(self):
         # Implementáld a "Speed" opció funkcióját
         pass
-        
+
     def playback_option1(self):
         print("Playback Option 1 selected")
 
@@ -201,9 +199,8 @@ class KeyRecorder:
     def settings_option3(self):
         print("Settings Option 3 selected")
 
+
 if __name__ == "__main__":
     root = tk.Tk()
     app = KeyRecorder(root)
     root.mainloop()
-
-
