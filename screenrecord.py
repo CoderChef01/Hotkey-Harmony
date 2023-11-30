@@ -32,18 +32,32 @@ class KeyRecorder:
         file_menu.add_command(label="Load", command=self.load_recorded_keys)
         file_menu.add_command(label="Quit", command=self.quit_app)
 
-        # "Options" menü
         options_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="Options", menu=options_menu)
 
         # "Repeat" opció
-        options_menu.add_checkbutton(label="Repeat", command=self.toggle_repeat)
+        repeat_menu = tk.Menu(options_menu, tearoff=0)
+        options_menu.add_cascade(label="Repeat", menu=repeat_menu)
+
+        repeat_menu.add_command(label="Option 1", command=self.repeat_option1)
+        repeat_menu.add_command(label="Option 2", command=self.repeat_option2)
+        repeat_menu.add_command(label="Option 3", command=self.repeat_option3)
 
         # "Hotkeys" opció
-        options_menu.add_checkbutton(label="Hotkeys", command=self.toggle_hotkeys)
+        hotkeys_menu = tk.Menu(options_menu, tearoff=0)
+        options_menu.add_cascade(label="Hotkeys", menu=hotkeys_menu)
+
+        hotkeys_menu.add_command(label="Option 1", command=self.hotkeys_option1)
+        hotkeys_menu.add_command(label="Option 2", command=self.hotkeys_option2)
+        hotkeys_menu.add_command(label="Option 3", command=self.hotkeys_option3)
 
         # "Speed" opció
-        options_menu.add_command(label="Speed", command=self.set_speed)
+        speed_menu = tk.Menu(options_menu, tearoff=0)
+        options_menu.add_cascade(label="Speed", menu=speed_menu)
+
+        speed_menu.add_command(label="Option 1", command=self.speed_option1)
+        speed_menu.add_command(label="Option 2", command=self.speed_option2)
+        speed_menu.add_command(label="Option 3", command=self.speed_option3)
 
         # Gombok és eseménykezelők
         self.start_button = tk.Button(master, text="Record", font=("Arial", 12), command=self.start_recording)
@@ -152,7 +166,36 @@ class KeyRecorder:
         # Implementáld a "Speed" opció funkcióját
         pass
 
+    def repeat_option1(self):
+        print("Repeat Option 1 selected")
+
+    def repeat_option2(self):
+        print("Repeat Option 2 selected")
+
+    def repeat_option3(self):
+        print("Repeat Option 3 selected")
+
+    def hotkeys_option1(self):
+        print("Hotkeys Option 1 selected")
+
+    def hotkeys_option2(self):
+        print("Hotkeys Option 2 selected")
+
+    def hotkeys_option3(self):
+        print("Hotkeys Option 3 selected")
+
+    def speed_option1(self):
+        print("Speed Option 1 selected")
+
+    def speed_option2(self):
+        print("Speed Option 2 selected")
+
+    def speed_option3(self):
+        print("Speed Option 3 selected")
+
 if __name__ == "__main__":
     root = tk.Tk()
     app = KeyRecorder(root)
     root.mainloop()
+
+
