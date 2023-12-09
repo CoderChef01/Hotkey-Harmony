@@ -8,22 +8,22 @@ class KeyRecorder:
     def __init__(self, master):
         self.master = master
         self.recorded_keys = []
-        self.recorded_times = []  # Az időpontok rögzítéséhez
+        self.recorded_times = []  # To record timestamps
         self.recording = False
-        self.intervals = []  # Lista az intevallumok tárolására
+        self.intervals = []  # List to store intervals
 
         self.master.title("Hotkey Harmony")
-        self.master.geometry("500x200")  # Ablak mérete
+        self.master.geometry("500x200")  # Window size
 
         self.label = tk.Label(master, text="Records:")
         self.label.config(font=("Arial", 14, "bold"))
-        self.label.pack(side=tk.TOP, pady=10, anchor="w")  # Balra igazítás hozzáadva
+        self.label.pack(side=tk.TOP, pady=10, anchor="w")  # Left alignment added
 
-        # Menü létrehozása
+        # Creating the menu
         menubar = tk.Menu(master)
         master.config(menu=menubar)
 
-        # "File" menü
+        # "File" menu
         file_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="File", menu=file_menu)
         file_menu.add_command(label="New File", command=self.new_file)
@@ -34,20 +34,20 @@ class KeyRecorder:
         options_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="Options", menu=options_menu)
 
-        # "Playback" opció
+        # "Playback" option
         playback_menu = tk.Menu(options_menu, tearoff=0)
         options_menu.add_cascade(label="Playback", menu=playback_menu)
 
         playback_menu.add_command(label="Speed", command=self.playback_option1)
         playback_menu.add_command(label="Repeat", command=self.playback_option2)
 
-        # "Recording" opció
+        # "Recording" option
         recording_menu = tk.Menu(options_menu, tearoff=0)
         options_menu.add_cascade(label="Recording", menu=recording_menu)
 
         recording_menu.add_command(label="Option", command=self.recording_option1)
 
-        # "Settings" opció
+        # "Settings" option
         settings_menu = tk.Menu(options_menu, tearoff=0)
         options_menu.add_cascade(label="Settings", menu=settings_menu)
 
@@ -55,19 +55,20 @@ class KeyRecorder:
         settings_menu.add_command(label="View", command=self.settings_option2)
         settings_menu.add_command(label="Other", command=self.settings_option3)
 
-        # "Help" menüpont        
+        # "Help" menu
         help_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="Help", menu=help_menu)
 
-        # "About" opció
+        # "About" option
         about_menu = tk.Menu(help_menu, tearoff=0)
         help_menu.add_cascade(label="About", menu=about_menu)
         about_menu.add_command(label="About", command=self.about_option)
-        # Címke a státusz üzenetekhez
+        
+        # Label for status messages
         self.status_label = tk.Label(master, text="Ready...", font=("Arial", 10), anchor="w", fg="green")
         self.status_label.pack(side=tk.BOTTOM, anchor=tk.SW, padx=10, pady=5)
 
-        # Gombok és eseménykezelők
+        # Buttons and event handlers
         self.start_button = tk.Button(master, text="Record", font=("Arial", 12), command=self.start_recording)
         self.start_button.pack(side=tk.RIGHT, padx=10)
 
@@ -81,7 +82,7 @@ class KeyRecorder:
         self.author_label = tk.Label(master, text="CoderChef", font=("Arial", 8), fg="gray")
         self.author_label.pack(side=tk.BOTTOM, anchor=tk.SE, padx=10, pady=5)
 
-        self.recording_label = None  # Az aktuális felvétel-intervallum label
+        self.recording_label = None  # Label for the current recording interval
 
         master.bind("<Key>", self.on_key)
         master.bind("<F10>", lambda event: self.handle_hotkey_press("F10"))
@@ -90,22 +91,22 @@ class KeyRecorder:
 
     def start_recording(self):
         self.recorded_keys = []
-        self.recorded_times = []  # Az időpontok rögzítéséhez
+        self.recorded_times = []  # To record timestamps
         self.recording = True
         self.start_button.config(state=tk.DISABLED)
         self.stop_button.config(state=tk.NORMAL)
         self.status_label.config(text="Recording...", fg="red")
 
-        # Az aktuális felvétel-intervallum label létrehozása
-        self.recording_label = tk.Label(self.master, text="Lenyomott gombok:")
+        # Creating the label for the current recording interval
+        self.recording_label = tk.Label(self.master, text="Pressed keys:")
         self.recording_label.pack(side=tk.TOP, pady=10)
 
     def stop_recording(self):
         self.recording = False
-        self.intervals.append((self.recorded_keys.copy(), self.recorded_times.copy()))  # Másolatokat készítünk
+        self.intervals.append((self.recorded_keys.copy(), self.recorded_times.copy()))  # Making copies
         self.start_button.config(state=tk.NORMAL)
         self.stop_button.config(state=tk.DISABLED)
-        self.recording_label.destroy()  # Az aktuális felvétel-intervallum label törlése
+        self.recording_label.destroy()  # Deleting the label for the current recording interval
         self.status_label.config(text="Ready...", fg="green")
 
     def on_key(self, event):
@@ -113,7 +114,7 @@ class KeyRecorder:
             key = event.char if event.char else str(event.keysym)
             if not self.recorded_keys or key != self.recorded_keys[-1]:
                 self.recorded_keys.append(key)
-                self.recorded_times.append(time.time())  # Rögzítjük az időpontot
+                self.recorded_times.append(time.time())  # Recording the timestamp
                 if self.recording_label:
                     self.update_recording_label()
 
@@ -123,12 +124,12 @@ class KeyRecorder:
 
     @staticmethod
     def simulate_key_press(key):
-        # Hozzunk létre egy Controller példányt
+        # Create a Controller instance
         controller = keyboard.Controller()
 
-        # Szimuláljunk egy gombnyomást a létrehozott példánnyal
+        # Simulate a key press with the created instance
         controller.press(key)
-        time.sleep(0.1)  # Várunk egy kicsit
+        time.sleep(0.1)  # Wait for a short time
         controller.release(key)
 
     def play_recorded_keys(self):
@@ -136,9 +137,9 @@ class KeyRecorder:
         for interval_keys, interval_times in self.intervals:
             for i in range(len(interval_keys)):
                 key = interval_keys[i]
-                self.label.config(text="Lenyomott gombok: " + key)
+                self.label.config(text="Pressed keys: " + key)
                 self.simulate_key_press(key)
-                # Várakozás a következő gombnyomásig
+                # Wait until the next key press
                 if i + 1 < len(interval_times):
                     sleep_time = interval_times[i + 1] - interval_times[i]
                     time.sleep(sleep_time)
@@ -146,11 +147,11 @@ class KeyRecorder:
         self.status_label.config(text="Ready...", fg="green")
 
     def handle_hotkey_press(self, hotkey):
-        messagebox.showinfo("Gyorsgomb értesítés", f"{hotkey} gomb megnyomva!", icon="info")
-        self.master.after(3000, lambda: self.master.update_idletasks())  # 3 másodperc múlva töröljük az értesítést
+        messagebox.showinfo("Hotkey Notification", f"{hotkey} key pressed!", icon="info")
+        self.master.after(3000, lambda: self.master.update_idletasks())  # Remove the notification after 3 seconds
 
     def new_file(self):
-        # Töröljük az előző felvétel-intervallumokat
+        # Delete the previous recording intervals
         self.intervals = []
 
     def save_recorded_keys(self):
@@ -169,15 +170,15 @@ class KeyRecorder:
         self.master.destroy()
 
     def toggle_playback(self):
-        # Implementáld a "Repeat" opció állapotának kezelését
+        # Implement handling for the "Playback" option state
         pass
 
-    def recording(self):
-        # Implementáld a "Hotkeys" opció állapotának kezelését
+    def recording_option(self):
+        # Implement handling for the "Recording" option state
         pass
 
     def set_settings(self):
-        # Implementáld a "Speed" opció funkcióját
+        # Implement the functionality of the "Settings" option
         pass
 
     def playback_option1(self):
@@ -206,10 +207,9 @@ class KeyRecorder:
 
     def settings_option3(self):
         print("Settings Option 3 selected")
-        
+
     def about_option(self):
         messagebox.showinfo("About", "Hotkey Harmony\nVersion 1.0\n\n(C) 2023 CoderChef")
-
 
 
 if __name__ == "__main__":
